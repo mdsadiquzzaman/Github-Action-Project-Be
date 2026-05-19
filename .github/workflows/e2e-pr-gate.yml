@@ -43,16 +43,54 @@ jobs:
 
     - name: Seed the Database
       run: npm run seed
+    
+    - name: Get E2E Tags from PR Labels
+      id: get-tags
+      run: |
+        # Get all labels from the PR and join them with spaces
+        LABELS="${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+        echo "PR Labels: $LABELS"
+        
+        GREP_TAGS=""
+        
+        # Check for e2e: brand
+        if echo "$LABELS" | grep -q "e2e: brand"; then
+          if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
+          GREP_TAGS="${GREP_TAGS}@brand"
+        fi
+        
+        # Check for e2e: item
+        if echo "$LABELS" | grep -q "e2e: item"; then
+          if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
+          GREP_TAGS="${GREP_TAGS}@item"
+        fi
+        
+        # Check for e2e: auth
+        if echo "$LABELS" | grep -q "e2e: auth"; then
+          if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
+          GREP_TAGS="${GREP_TAGS}@auth"
+        fi
+        
+        echo "Playwright Grep Tags: $GREP_TAGS"
+        echo "grep_tags=$GREP_TAGS" >> $GITHUB_OUTPUT
 
     - name: Run Playwright E2E Tests
-      run: npm run test:e2e
+      run: |
+        # If tags were found, run only those tests. Otherwise, run all tests.
+        if [ -n "${{ steps.get-tags.outputs.grep_tags }}" ]; then
+          echo "Running targeted tests..."
+          npx playwright test --grep "${{ steps.get-tags.outputs.grep_tags }}"
+        else
+          echo "No specific E2E label found. Running ALL tests..."
+          npx playwright test
+        fi
 
     - name: Upload Playwright Report & Failures
       uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }} # Runs even if the test step above fails (but not if user cancels)
+      if: ${{ !cancelled() }}
       with:
         name: playwright-e2e-report
         path: |
-          playwright-report/      # The HTML report
-          test-results/           # Screenshots and videos
-        retention-days: 7         # Delete the artifact after 7 days to save space
+          playwright-report/
+          test-results/
+        retention-days: 7

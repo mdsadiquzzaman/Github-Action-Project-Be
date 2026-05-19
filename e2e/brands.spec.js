@@ -1,7 +1,7 @@
 const { test, expect } = require('./fixtures');
 
 // Use .serial to run tests in sequence and share the createdBrandId variable
-test.describe.serial('Brands API (Protected)', () => {
+test.describe.serial('Brands API (Protected)', {tag: '@brands'}, () => {
   let createdBrandId;
 
   test('POST /api/brands - should create a new brand', async ({ authenticatedRequest }) => {

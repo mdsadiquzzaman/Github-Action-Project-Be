@@ -1,6 +1,6 @@
 const { test, expect } = require('./fixtures');
 
-test.describe.serial('Items API (Protected)', () => {
+test.describe.serial('Items API (Protected)', {tag: '@items'}, () => {
   let createdItemId;
 
   test('POST /api/items - should create a new item', async ({ authenticatedRequest }) => {

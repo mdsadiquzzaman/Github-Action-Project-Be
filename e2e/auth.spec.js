@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe.serial('Auth API', () => {
+test.describe.serial('Auth API', {tag: '@auth'}, () => {
   test('POST /api/auth/register - should register a new user', async ({ request }) => {
     const response = await request.post('/api/auth/register', {
       data: {
