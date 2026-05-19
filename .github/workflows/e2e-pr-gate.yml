@@ -53,20 +53,20 @@ jobs:
         
         GREP_TAGS=""
         
-        # Check for e2e: brand
-        if echo "$LABELS" | grep -q "e2e: brand"; then
+        # Check for e2e:brands
+        if echo "$LABELS" | grep -q "e2e:brands"; then
           if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
-          GREP_TAGS="${GREP_TAGS}@brand"
+          GREP_TAGS="${GREP_TAGS}@brands"
         fi
         
-        # Check for e2e: item
-        if echo "$LABELS" | grep -q "e2e: item"; then
+        # Check for e2e:items
+        if echo "$LABELS" | grep -q "e2e:items"; then
           if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
-          GREP_TAGS="${GREP_TAGS}@item"
+          GREP_TAGS="${GREP_TAGS}@items"
         fi
         
-        # Check for e2e: auth
-        if echo "$LABELS" | grep -q "e2e: auth"; then
+        # Check for e2e:auth
+        if echo "$LABELS" | grep -q "e2e:auth"; then
           if [ -n "$GREP_TAGS" ]; then GREP_TAGS="${GREP_TAGS}|"; fi
           GREP_TAGS="${GREP_TAGS}@auth"
         fi
