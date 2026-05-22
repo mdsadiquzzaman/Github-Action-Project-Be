@@ -68,6 +68,19 @@ docker-compose exec api node src/seeders/seed.js
 ```
 (This tells Docker: "Run this node command inside the running api container").
 
+### Using Script 
+Make the scripts executable by running this command in your terminal:
+
+``` bash
+chmod +x scripts/start-backend.sh scripts/run-e2e.sh
+```
+### Using Docker 
+Now, your local workflow is incredibly simple:
+```bash
+Run npm run docker:backend (Starts DB, API, and Seeds automatically)
+Run npm run docker:test (Runs Playwright against the running containers)
+Run docker-compose down (Shuts everything down when done)
+```
 ## API Documentation (Swagger)
 
 Once the server is running, you can access the interactive Swagger UI documentation at:
@@ -83,6 +96,8 @@ http://localhost:3000/api-docs
 3. Click the 🔒 Authorize button at the top right of the Swagger UI.
 4. Enter the token in the format: `Bearer <your_token_here>` and click Authorize.
 5. You can now test the Items CRUD endpoints.
+
+
 
 ## API Endpoints
 
