@@ -48,6 +48,25 @@ npm run dev
 ```bash
 npm start
 ```
+## For Docker System
+### 1. Build and Start the Containers
+**In your terminal, run:**
+
+```bash
+docker-compose up -d --build
+```
+
+(The -d runs it in the background. --build forces it to rebuild the Docker image using your latest code).
+
+## 2. Seed the Docker Database
+ Your database is empty right now. We need to run the seed script inside the API container, pointing to the Docker database.
+
+Run this command:
+
+```bash
+docker-compose exec api node src/seeders/seed.js
+```
+(This tells Docker: "Run this node command inside the running api container").
 
 ## API Documentation (Swagger)
 
