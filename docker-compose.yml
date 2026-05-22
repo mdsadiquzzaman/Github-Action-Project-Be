@@ -1,0 +1,29 @@
+
+services:
+  # The MongoDB Service
+  mongo:
+    image: mongo:7.0
+    container_name: my-mongodb
+    ports:
+      - "27017:27017" # Expose to host so local tools (and Playwright) can access it
+    volumes:
+      - mongo-data:/data/db # Persist data so it survives container restarts
+
+  # The Node.js API Service
+  api:
+    build: .
+    container_name: my-node-api
+    ports:
+      - "3000:3000"
+    environment:
+      # Inside Docker, "mongo" refers to the MongoDB service above!
+      # This overrides the .env file's MONGO_URI.
+      - MONGO_URI=mongodb://mongo:27017/node_crud_api
+      - PORT=3000
+      - JWT_SECRET=super_secret_docker_key
+    depends_on:
+      - mongo # Wait for mongo to start before starting the API
+
+# Define the named volume for MongoDB
+volumes:
+  mongo-data:
