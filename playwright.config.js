@@ -13,6 +13,7 @@ module.exports = defineConfig({
       },
     },
   ],
+  reporter: [['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:3000',
     extraHTTPHeaders: {
