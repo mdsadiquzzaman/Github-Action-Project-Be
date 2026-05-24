@@ -79,6 +79,7 @@ jobs:
         echo "grep_tags=$GREP_TAGS" >> $GITHUB_OUTPUT
     # 5. Run Tests
     - name: Run Playwright E2E Tests
+      id: run-tests
       run: |
         if [ -n "${{ steps.get-tags.outputs.grep_tags }}" ]; then
           npx playwright test --grep "${{ steps.get-tags.outputs.grep_tags }}"
@@ -86,12 +87,10 @@ jobs:
           npx playwright test
         fi
 
-    - name: Upload Playwright Report & Failures
+    - name: Upload Playwright HTML Report to GitHub
       uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+      if: always() # Crucial: This ensures the report uploads even if the tests fail!
       with:
         name: playwright-e2e-report
-        path: |
-          playwright-report/
-          test-results/
-        retention-days: 7
+        path: playwright-report/ # The folder where Playwright saves the HTML report
+        retention-days: 30 # Keep the report available for 30 days

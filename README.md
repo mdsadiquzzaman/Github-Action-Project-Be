@@ -73,6 +73,10 @@ Make the scripts executable by running this command in your terminal:
 
 ``` bash
 chmod +x scripts/start-backend.sh scripts/run-e2e.sh
+``` 
+or 
+``` bash
+bash scripts/start-backend.sh
 ```
 ### Using Docker 
 Now, your local workflow is incredibly simple:
