@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const authRoutes = require('./routes/authRoutes');
@@ -9,6 +10,10 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true // Optional: needed if you ever use cookies instead of JWT headers
+}));
 
 // Swagger Configuration
 const swaggerOptions = {
